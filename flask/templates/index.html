@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Секция с текстом */
+    .hero-section {
+        text-align: center;
+        padding: 20px 20px 40px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .hero-title {
+        font-size: 36px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        background: linear-gradient(to right, #fff, #888);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+        color: #888;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+    }
+
+    .page-title {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px 20px 0;
+        font-size: 24px;
+        font-weight: 500;
+        opacity: 0.9;
+    }
+
+    .portfolio-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .task-card {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 20px;
+        color: #eee;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .task-card:hover {
+        border-color: #555;
+        transform: translateY(-5px);
+    }
+
+    .task-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center; /* Центрируем бейджи и иконку по одной линии */
+        margin-bottom: 15px;
+    }
+
+    .lang-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .lang-label {
+        font-size: 10px;
+        text-transform: uppercase;
+        color: #888;
+        letter-spacing: 1px;
+    }
+
+    .task-title {
+        font-size: 18px;
+        margin: 0 0 10px 0;
+        font-weight: 500;
+    }
+
+    .task-text {
+        font-size: 14px;
+        color: #aaa;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .task-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #333;
+        padding-top: 15px;
+    }
+
+    .author-name {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .open-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .open-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+{% if request.endpoint == 'index' %}
+    <div class="hero-section">
+        <h1 class="hero-title">Делитесь опытом и решайте задачи вместе</h1>
+        <p class="hero-subtitle">Найдите интересный вызов или протяните руку помощи коллегам по коду</p>
+    </div>
+{% else %}
+    <h2 class="page-title">Мои задачи</h2>
+{% endif %}
+
+<div class="portfolio-grid">
+    {% for task in tasks %}
+    <div class="task-card">
+        <div>
+            <div class="task-header">
+                <div class="lang-group">
+                    <span class="lang-label">{{ task.language }}</span>
+                    <!-- Бейдж сложности -->
+                    {% if task.difficulty %}
+                        <span class="diff-badge diff-{{ task.difficulty|lower }}">{{ task.difficulty }}</span>
+                    {% endif %}
+                </div>
+                <i class="fa-solid fa-code" style="color: #444;"></i>
+            </div>
+            <h3 class="task-title">{{ task.title }}</h3>
+            <p class="task-text">
+                {{ task.content[:100] }}{% if task.content|length > 100 %}...{% endif %}
+            </p>
+        </div>
+
+        <div class="task-footer">
+            <span class="author-name">@{{ task.user.name }}</span>
+            <a href="{{ url_for('task_detail', task_id=task.id) }}" class="open-link">Открыть &rarr;</a>
+        </div>
+    </div>
+    {% else %}
+        <p style="text-align: center; color: #555; grid-column: 1 / -1; padding-top: 40px;">
+            Задач пока нет.
+        </p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,106 @@
+<style>
+    /* 1. Глобальные сбросы */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        background-color: #080710;
+        font-family: 'Poppins', sans-serif;
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column; /* Элементы (шапка и контент) идут друг под другом */
+    }
+
+    /* 2. Шапка */
+    .nav-wrapper { padding: 20px 0; width: 100%; display: flex; justify-content: center; }
+    .static-nav {
+        width: 90%; max-width: 1100px; height: 60px;
+        background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 40px;
+        display: flex; align-items: center; padding: 0 30px; justify-content: space-between;
+    }
+    .logo { font-weight: 600; font-size: 20px; text-decoration: none; color: white; }
+    .nav-links { display: flex; list-style: none; gap: 30px; }
+    .nav-links a { text-decoration: none; color: white; font-size: 14px; opacity: 0.7; transition: 0.3s; }
+    .nav-links a:hover { opacity: 1; }
+    .btn-logout { background: #ff512f; color: white; padding: 8px 20px; border-radius: 25px; text-decoration: none; font-size: 14px; }
+
+    /* 3. КОНТЕЙНЕР КОНТЕНТА */
+    .main-content {
+        flex-grow: 1; /* Занимает всё оставшееся место под шапкой */
+        width: 100%;
+        display: flex;
+        padding: 20px;
+        /* Логика позиционирования */
+        {% if request.endpoint == 'make_task' %}
+            justify-content: flex-start !important;
+            align-items: flex-start !important;
+            padding-left: 5% !important;
+        {% else %}
+            justify-content: center !important;
+            align-items: center !important;
+        {% endif %}
+    }
+
+    /* 4. ФОРМА-ГИГАНТ (для make_task) */
+    .large-form {
+        width: 100% !important;
+        max-width: 900px !important; /* Делаем её реально широкой */
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        border-radius: 15px !important;
+        padding: 50px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(10px) !important;
+    }
+
+    /* 5. Поля ввода (Тёмные, без белого фона) */
+    .large-form input:not([type="submit"]),
+    .large-form textarea,
+    .large-form select {
+        display: block !important;
+        width: 100% !important;
+        background-color: rgba(255, 255, 255, 0.07) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: white !important;
+        padding: 15px !important;
+        margin-top: 10px !important;
+        margin-bottom: 20px !important;
+        font-size: 16px !important;
+        border-radius: 5px !important;
+        outline: none !important;
+    }
+
+    /* Специально для ОГРОМНОГО описания */
+    .large-form textarea {
+        min-height: 400px !important;
+        resize: vertical !important;
+    }
+
+    /* Кнопка Опубликовать */
+    .large-form input[type="submit"] {
+        width: 100% !important;
+        background-color: #ffffff !important;
+        color: #080710 !important;
+        padding: 18px !important;
+        font-weight: 600 !important;
+        font-size: 18px !important;
+        cursor: pointer !important;
+        border: none !important;
+        border-radius: 5px !important;
+        transition: 0.3s;
+    }
+    .large-form input[type="submit"]:hover { background-color: #e5e5e5 !important; }
+</style>
+
+
+.diff-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.diff-easy { background: rgba(0, 255, 0, 0.1); color: #00ff00; border: 1px solid #00ff0033; }
+.diff-medium { background: rgba(255, 255, 0, 0.1); color: #ffff00; border: 1px solid #ffff0033; }
+.diff-hard { background: rgba(255, 0, 0, 0.1); color: #ff0000; border: 1px solid #ff000033; }

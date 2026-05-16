@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .task-view { max-width: 800px; width: 100%; }
+    .card-task { background: #161616; padding: 30px; border-radius: 15px; border: 1px solid #333; margin-bottom: 30px; }
+
+    /* Стили для области кода */
+    .code-area {
+        background: #0d0d0d;
+        padding: 0; /* Убираем лишний отступ, так как pre даст свой */
+        border-radius: 10px;
+        margin: 15px 0;
+        border: 1px solid #222;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    .code-area pre {
+        margin: 0;
+        padding: 20px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 200px;
+        background: #111;
+        border: 1px solid #333;
+        color: #fff;
+        padding: 15px;
+        border-radius: 10px;
+        font-family: 'Courier New', monospace;
+        outline: none;
+    }
+
+    textarea:focus { border-color: #555; }
+
+    .solution-item {
+        background: #111;
+        border-left: 3px solid white;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 0 10px 10px 0;
+    }
+</style>
+
+<div class="task-view">
+    <div class="card-task">
+        <!-- Блок с языком и сложностью -->
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <span style="color: #666; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                {{ task.language }}
+            </span>
+            {% if task.difficulty %}
+                <span class="diff-badge diff-{{ task.difficulty|lower }}">
+                    {{ task.difficulty }}
+                </span>
+            {% endif %}
+        </div>
+
+        <h1 style="margin-top: 5px; font-size: 28px;">{{ task.title }}</h1>
+        <p style="margin: 20px 0; color: #ccc; white-space: pre-wrap; line-height: 1.7;">{{ task.content }}</p>
+
+        <div style="font-size: 13px; color: #555; border-top: 1px solid #222; padding-top: 15px;">
+            Автор: <span style="color: #888;">@{{ task.user.name }}</span>
+        </div>
+    </div>
+
+    <h3 style="margin-bottom: 15px; font-weight: 500;">Ваш ответ:</h3>
+    <form action="{{ url_for('add_solution', task_id=task.id) }}" method="POST" style="width: 100%;">
+        <textarea name="solution_code" placeholder="Вставьте ваш код здесь..."></textarea>
+        <input type="submit" value="Опубликовать решение" style="margin-top: 15px;">
+    </form>
+
+    <h3 style="margin-top: 50px; font-weight: 500;">Решения сообщества ({{ task.solutions|length }}):</h3>
+    {% for sol in task.solutions %}
+    <div class="solution-item">
+        <div style="margin-bottom: 10px; font-size: 13px; color: #888;">@{{ sol.user.name }} предложил решение:</div>
+        <div class="code-area">
+            <!-- Добавлен класс для автоматической подсветки (зависит от языка задачи) -->
+            <pre><code class="language-{{ task.language|lower }}">{{ sol.code }}</code></pre>
+        </div>
+    </div>
+    {% else %}
+        <p style="color: #444; margin-top: 20px;">Оставьте первое решение!</p>
+    {% endfor %}
+</div>
+{% endblock %}

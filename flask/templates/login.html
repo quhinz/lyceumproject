@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<form method="post">
+    {{ form.csrf_token }}
+    <h3>Вход</h3>
+    {{ form.email.label }}{{ form.email(placeholder="Email") }}
+    {{ form.password.label }}{{ form.password(placeholder="Пароль", type="password") }}
+    <p style="margin-top: 15px; font-size: 12px;">{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+    {{ form.submit() }}
+    <p style="text-align: center; margin-top: 15px;"><a href="/register">Нет аккаунта? Регистрация</a></p>
+    {% if message %}<div class="error-msg">{{ message }}</div>{% endif %}
+</form>
+{% endblock %}

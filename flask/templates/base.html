@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %} PythonHub</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: #0a0a0a;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        .header-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+            z-index: 100;
+        }
+
+        .static-nav {
+            width: 90%;
+            max-width: 1000px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            justify-content: space-between;
+        }
+
+        .nav-links { display: flex; list-style: none; gap: 25px; }
+        .nav-links a { color: white; text-decoration: none; font-size: 14px; opacity: 0.7; transition: 0.3s; }
+        .nav-links a:hover { opacity: 1; }
+
+        .auth-area { display: flex; align-items: center; gap: 15px; }
+
+        .btn-reg { background: white; color: #080710; padding: 7px 18px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 13px; }
+        .btn-logout { background: #ff512f; color: white; padding: 7px 18px; border-radius: 20px; text-decoration: none; font-size: 14px; }
+
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 80px 0 40px;
+        }
+
+        {% if request.endpoint == 'login' or request.endpoint == 'register' %}
+        .main-container {
+            justify-content: center;
+            padding-top: 0;
+        }
+        .header-wrapper { display: none; }
+        {% endif %}
+
+        form {
+            width: 400px;
+            background-color: rgba(255,255,255,0.13);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.1);
+            padding: 40px 35px;
+        }
+        form h3 { text-align: center; margin-bottom: 20px; font-weight: 500; font-size: 28px; color: #fff; }
+        label { display: block; margin-top: 15px; font-size: 14px; color: #fff; }
+        input:not([type="submit"]) {
+            display: block; height: 45px; width: 100%;
+            background-color: rgba(255,255,255,0.07);
+            border-radius: 3px; padding: 0 10px; margin-top: 8px; font-size: 14px; color: #fff; border: none; outline: none;
+        }
+        input[type="submit"] {
+            margin-top: 30px; width: 100%; background-color: #ffffff;
+            color: #080710; padding: 15px 0; font-size: 18px;
+            font-weight: 600; border-radius: 5px; cursor: pointer; border: none;
+        }
+
+        /* --- СТИЛИ ДЛЯ БЕЙДЖЕЙ СЛОЖНОСТИ --- */
+        .diff-badge {
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 8px;
+            text-transform: uppercase;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            letter-spacing: 0.5px;
+        }
+        .diff-easy { background: rgba(0, 255, 0, 0.12); color: #00ff00; border: 1px solid rgba(0, 255, 0, 0.2); }
+        .diff-medium { background: rgba(255, 255, 0, 0.12); color: #ffff00; border: 1px solid rgba(255, 255, 0, 0.2); }
+        .diff-hard { background: rgba(255, 81, 47, 0.12); color: #ff512f; border: 1px solid rgba(255, 81, 47, 0.2); }
+
+        .error-msg { color: #ff512f; text-align: center; margin-top: 15px; font-size: 13px; }
+        .form-link { display: block; text-align: center; margin-top: 15px; color: #fff; font-size: 13px; text-decoration: underline; opacity: 0.8; }
+    </style>
+</head>
+<body>
+{% if request.endpoint != 'login' and request.endpoint != 'register' %}
+    <div class="header-wrapper">
+        <nav class="static-nav">
+            <a href="/" style="font-weight: 600; color: white; text-decoration: none;">PythonHub</a>
+
+            <ul class="nav-links">
+                <li><a href="/">Main page</a></li>
+                <li><a href="/mytasks">My tasks</a></li>
+                <li><a href="/make_task">Create task</a></li>
+            </ul>
+
+            <div class="auth-area">
+                {% if current_user.is_authenticated %}
+                    <span style="font-size: 14px; margin-right: 10px;">{{ current_user.name }}</span>
+                    <a href="/logout" class="btn-logout">Выйти</a>
+                {% else %}
+                    <a href="/login" style="color: white; text-decoration: none; font-size: 14px;">Вход</a>
+                    <a href="/register" class="btn-reg">Регистрация</a>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+{% endif %}
+    <div class="main-container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Центрируем контент */
+    .main-content {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 50px 20px;
+        min-height: calc(100vh - 100px);
+        width: 100%;
+    }
+
+    /* Огромная форма */
+    .large-form {
+        width: 100%;
+        max-width: 900px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        padding: 50px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .large-form h3 {
+        margin-bottom: 30px;
+        font-size: 28px;
+        text-align: center;
+        background: linear-gradient(to right, #fff, #888);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .large-form label {
+        display: block;
+        margin-top: 20px;
+        font-size: 16px;
+        opacity: 0.8;
+    }
+
+    /* Поля ввода */
+    .large-form input:not([type="submit"]),
+    .large-form textarea,
+    .large-form select {
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.07) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: #ffffff !important;
+        padding: 15px;
+        margin-top: 10px;
+        border-radius: 8px;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .large-form textarea {
+        min-height: 300px;
+        resize: vertical;
+    }
+
+    /* Исправление отображения select */
+    .large-form select {
+        cursor: pointer;
+    }
+
+    .large-form select option {
+        background: #1a1a1a;
+        color: white;
+    }
+
+    /* Кнопка */
+    .large-form input[type="submit"] {
+        width: 100%;
+        margin-top: 40px;
+        padding: 18px;
+        background: #ffffff;
+        color: #080710;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 18px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .large-form input[type="submit"]:hover {
+        background: #e0e0e0;
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="main-content">
+    <form method="post" class="large-form">
+        <h3>Создание новой задачи</h3>
+
+        <label>Заголовок</label>
+        <input type="text" name="title" placeholder="Краткое название проблемы" required>
+
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1;">
+                <label>Язык программирования</label>
+                <select name="language">
+                    <option value="PYTHON">Python</option>
+                    <option value="JAVASCRIPT">JavaScript</option>
+                    <option value="CPP">C++</option>
+                    <option value="OTHER">Другой</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label>Сложность</label>
+                <select name="difficulty">
+                    <option value="Easy">Easy (Легко)</option>
+                    <option value="Medium" selected>Medium (Средне)</option>
+                    <option value="Hard">Hard (Сложно)</option>
+                </select>
+            </div>
+        </div>
+
+        <label>Описание задачи</label>
+        <textarea name="content" placeholder="Вставьте условие или код, который не работает..." required></textarea>
+
+        <input type="submit" value="Опубликовать задачу">
+    </form>
+</div>
+{% endblock %}
